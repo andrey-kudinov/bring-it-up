@@ -15,7 +15,20 @@ export class Slider {
       this.slideIndex = this.slides.length
     }
 
-    console.log(this.slides)
+    try {
+      this.toast.style.opacity = 0
+      console.log(n);
+      if (n === 3) {
+        console.log(n);
+        this.toast.classList.add('animated')
+        setTimeout(() => {
+          this.toast.style.opacity = 1
+          this.toast.classList.add('slideInUp')
+        }, 3000);
+      } else {
+        this.toast.classList.remove('slideInUp')
+      }
+    } catch (error) {}
 
     Array.from(this.slides).forEach(slide => {
       slide.style.display = 'none'
@@ -30,6 +43,10 @@ export class Slider {
 
 
   render() {
+    try {
+      this.toast = document.querySelector('.hanson')
+    } catch (error) {}
+
     this.buttons.forEach(button => {
       button.addEventListener('click', () => {
         this.plusSlides(1)
