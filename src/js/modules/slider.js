@@ -17,7 +17,7 @@ export class Slider {
 
     console.log(this.slides)
 
-    this.slides.forEach(slide => {
+    Array.from(this.slides).forEach(slide => {
       slide.style.display = 'none'
     })
 
