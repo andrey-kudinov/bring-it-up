@@ -1,0 +1,2 @@
+export { Slider } from './slider'
+ 

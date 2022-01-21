@@ -1,8 +1,8 @@
 {
-  "name": "loan",
+  "name": "bring-it-up",
   "version": "1.0.0",
   "description": "",
-  "author": "",
+  "author": "Andrey Kudinov",
   "license": "ISC",
   "browserslist": [
     "> 1%",
