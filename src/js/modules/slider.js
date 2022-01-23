@@ -17,9 +17,7 @@ export class Slider {
 
     try {
       this.toast.style.opacity = 0
-      console.log(n);
       if (n === 3) {
-        console.log(n);
         this.toast.classList.add('animated')
         setTimeout(() => {
           this.toast.style.opacity = 1
