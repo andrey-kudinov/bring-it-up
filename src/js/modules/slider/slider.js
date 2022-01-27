@@ -8,8 +8,8 @@ export class Slider {
     animate = false,
     autoplay = false
   } = {}) {
-    this.container = document.querySelector(container)
-    this.slides = this.container.children
+    this.container = document.querySelector(container) 
+    try {this.slides = this.container.children} catch(e) {}
     this.buttons = document.querySelectorAll(buttons)
     this.prev = document.querySelector(prev)
     this.next = document.querySelector(next)
