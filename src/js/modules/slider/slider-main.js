@@ -1,4 +1,4 @@
-import { Slider } from "./slider";
+import { Slider } from './slider'
 
 export class MainSlider extends Slider {
   constructor(buttons) {
@@ -21,7 +21,7 @@ export class MainSlider extends Slider {
         setTimeout(() => {
           this.toast.style.opacity = 1
           this.toast.classList.add('slideInUp')
-        }, 3000);
+        }, 3000)
       } else {
         this.toast.classList.remove('slideInUp')
       }
@@ -35,27 +35,31 @@ export class MainSlider extends Slider {
   }
 
   plusSlides(n) {
-    this.showSlides(this.slideIndex += n)
+    this.showSlides((this.slideIndex += n))
   }
-
 
   render() {
     try {
-      this.toast = document.querySelector('.hanson')
-    } catch (error) {}
+      try {
+        this.toast = document.querySelector('.hanson')
+      } catch (error) {}
 
-    this.buttons.forEach(button => {
-      button.addEventListener('click', () => {
-        this.plusSlides(1)
+      this.buttons.forEach(button => {
+        button.addEventListener('click', () => {
+          this.plusSlides(1)
+        })
+
+        button.parentNode.previousElementSibling.addEventListener(
+          'click',
+          e => {
+            e.preventDefault()
+            this.slideIndex = 1
+            this.showSlides(this.slideIndex)
+          }
+        )
       })
 
-      button.parentNode.previousElementSibling.addEventListener('click', (e) => {
-        e.preventDefault()
-        this.slideIndex = 1
-        this.showSlides(this.slideIndex)
-      })
-    })
-
-    this.showSlides(this.slideIndex)
+      this.showSlides(this.slideIndex)
+    } catch (e) {}
   }
 }
