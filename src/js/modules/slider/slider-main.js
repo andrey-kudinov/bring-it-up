@@ -38,28 +38,43 @@ export class MainSlider extends Slider {
     this.showSlides((this.slideIndex += n))
   }
 
+  bindTriggers() {
+    this.buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        this.plusSlides(1)
+      })
+
+      button.parentNode.previousElementSibling.addEventListener('click', e => {
+        e.preventDefault()
+        this.slideIndex = 1
+        this.showSlides(this.slideIndex)
+      })
+    })
+
+    document.querySelectorAll('.prevmodule').forEach(button => {
+      button.addEventListener('click', e => {
+        e.preventDefault()
+        this.plusSlides(-1)
+      })
+    })
+
+    document.querySelectorAll('.nextmodule').forEach(button => {
+      button.addEventListener('click', e => {
+        e.stopPropagation()
+        e.preventDefault()
+        this.plusSlides(1)
+      })
+    })
+  }
+
   render() {
-    try {
+    if (this.container) {
       try {
         this.toast = document.querySelector('.hanson')
       } catch (error) {}
 
-      this.buttons.forEach(button => {
-        button.addEventListener('click', () => {
-          this.plusSlides(1)
-        })
-
-        button.parentNode.previousElementSibling.addEventListener(
-          'click',
-          e => {
-            e.preventDefault()
-            this.slideIndex = 1
-            this.showSlides(this.slideIndex)
-          }
-        )
-      })
-
       this.showSlides(this.slideIndex)
-    } catch (e) {}
+      this.bindTriggers()
+    }
   }
 }
