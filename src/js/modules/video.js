@@ -3,6 +3,7 @@ export class Video {
     this.buttons = document.querySelectorAll(triggers)
     this.overlay = document.querySelector(overlay)
     this.close = this.overlay.querySelector('.close')
+    this.onPlayerStateChange = this.onPlayerStateChange.bind(this)
   }
 
   create(url) {
@@ -10,22 +11,68 @@ export class Video {
       height: '100%',
       width: '100%',
       videoId: String(url),
+      events: {
+        onStateChange: this.onPlayerStateChange
+      }
     })
 
     this.overlay.style.display = 'flex'
-    console.log(this.player, url);
+  }
+
+  onPlayerStateChange(state) {
+    try {
+      const blockedElement = this.activeButton.closest(
+        '.module__video-item'
+      ).nextElementSibling
+      const playButton = this.activeButton.querySelector('svg').cloneNode(true)
+      const playCircle = blockedElement.querySelector('.play__circle')
+      const playText = document.querySelector('.play__text')
+      if (state.data === 0 && playCircle.classList.contains('closed')) {
+        playCircle.classList.remove('closed')
+        blockedElement.querySelector('svg').remove()
+        playCircle.appendChild(playButton)
+        playText.textContent = 'play video'
+        playText.classList.remove('attention')
+        blockedElement.style.opacity = 1
+        blockedElement.style.filter = 'none'
+
+        blockedElement.dataset.disabled = false
+      }
+    } catch (error) {}
   }
 
   bindTriggers() {
-    this.buttons.forEach(button => {
-      button.addEventListener('click', () => {
-        if (document.querySelector('iframe#frame')) {
-          this.overlay.style.display = 'flex'
-        } else {
-          const path = button.getAttribute('data-url')
-          this.create(path)
+    this.buttons.forEach((button, index) => {
+      try {
+        const blockedElement = button.closest(
+          '.module__video-item'
+        ).nextElementSibling
+
+        if (index % 2 === 0) {
+          blockedElement.dataset.disabled = true
         }
-       
+      } catch (error) {}
+
+      button.addEventListener('click', () => {
+        if (
+          !button.closest('.module__video-item') ||
+          button
+            .closest('.module__video-item')
+            .dataset.disabled !== 'true'
+        ) {
+          this.activeButton = button
+
+          if (document.querySelector('iframe#frame')) {
+            this.overlay.style.display = 'flex'
+            if (this.path !== button.getAttribute('data-url')) {
+              this.path = button.getAttribute('data-url')
+              this.player.loadVideoById({ videoId: this.path })
+            }
+          } else {
+            this.path = button.getAttribute('data-url')
+            this.create(this.path)
+          }
+        }
       })
     })
   }
@@ -38,11 +85,13 @@ export class Video {
   }
 
   init() {
-    const tag = document.createElement('script')
-    tag.src = 'https://www.youtube.com/iframe_api'
-    const firstScriptTag = document.getElementsByTagName('script')[0]
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
-    this.bindTriggers()
-    this.bindClose()
+    if (this.buttons.length) {
+      const tag = document.createElement('script')
+      tag.src = 'https://www.youtube.com/iframe_api'
+      const firstScriptTag = document.getElementsByTagName('script')[0]
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
+      this.bindTriggers()
+      this.bindClose()
+    }
   }
 }
