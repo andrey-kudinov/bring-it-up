@@ -36,7 +36,7 @@ export class Video {
         blockedElement.style.opacity = 1
         blockedElement.style.filter = 'none'
 
-        blockedElement.setAttribute('data-disabled', false)
+        blockedElement.dataset.disabled = false
       }
     } catch (error) {}
   }
@@ -49,7 +49,7 @@ export class Video {
         ).nextElementSibling
 
         if (index % 2 === 0) {
-          blockedElement.setAttribute('data-disabled', true)
+          blockedElement.dataset.disabled = true
         }
       } catch (error) {}
 
@@ -58,7 +58,7 @@ export class Video {
           !button.closest('.module__video-item') ||
           button
             .closest('.module__video-item')
-            .getAttribute('data-disabled') !== 'true'
+            .dataset.disabled !== 'true'
         ) {
           this.activeButton = button
 
