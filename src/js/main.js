@@ -1,4 +1,12 @@
-import { Video, MainSlider, MiniSlider, Difference, Form } from "./modules/index"
+import {
+  Video,
+  MainSlider,
+  MiniSlider,
+  Difference,
+  Form,
+  ShowInfo,
+  Download
+} from './modules/index'
 
 window.addEventListener('DOMContentLoaded', () => {
   const slider = new MainSlider({
@@ -47,4 +55,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const form = new Form('.form')
   form.init()
+
+  new ShowInfo('.plus__content').init()
+
+  new Download('.download').init()
 })
